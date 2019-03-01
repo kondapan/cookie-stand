@@ -58,3 +58,30 @@ var secondLiCTotals = document.createElement('li');
 secondLiCTotals.textContent = `Total: ${seaTacAirport.dayTotals}`;
 seaTacAirportList.appendChild(secondLiCTotals);
 
+var seattleCenter = {
+  storeName: 'Seattle Center'
+  ,minCustomersPerHour: 11
+  ,maxCustomersPerHour: 38
+  ,avgCookiesPerCustomer: 3.7
+  ,randomNum: function() {
+    return Math.floor(Math.random() * (this.maxCustomersPerHour - this.minCustomersPerHour)) + this.minCustomersPerHour;
+  }
+  ,avgCustomersPerHour: []
+  ,cookiesPerHour: []
+  ,dayTotals: 0
+};
+
+var thirdStoreList = document.getElementById('seattleCenter');
+
+for(var sc=0; sc<hours.length; sc++){
+  seattleCenter.avgCustomersPerHour[sc] = seattleCenter.randomNum();
+  seattleCenter.cookiesPerHour[sc] = Math.floor(seattleCenter.avgCookiesPerCustomer * seattleCenter.avgCustomersPerHour[sc]);
+  seattleCenter.dayTotals = seattleCenter.dayTotals + seattleCenter.cookiesPerHour[sc];
+  var thirdLiC = document.createElement('li');
+  thirdLiC.textContent = `${hours[sc]}: ${seattleCenter.cookiesPerHour[sc]} cookies`;
+  thirdStoreList.appendChild(thirdLiC);
+}
+
+var thirdLiTotals = document.createElement('li');
+thirdLiTotals.textContent = `Total: ${seattleCenter.dayTotals}`;
+thirdStoreList.appendChild(thirdLiTotals);
