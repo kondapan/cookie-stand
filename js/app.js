@@ -23,11 +23,38 @@ for(var i=0; i<hours.length; i++){
   firstandPike.dayTotals = firstandPike.dayTotals + firstandPike.cookiesPerHour[i];
   var firstLiC = document.createElement('li');
   firstLiC.textContent = `${hours[i]}: ${firstandPike.cookiesPerHour[i]} cookies`;
-  // 3. Append the new element to its parent in the DOM
   firstStoreList.appendChild(firstLiC);
 }
 
 var firstLiTotals = document.createElement('li');
 firstLiTotals.textContent = `Total: ${firstandPike.dayTotals}`;
 firstStoreList.appendChild(firstLiTotals);
+
+var seaTacAirport = {
+  storeName: 'SeaTac Airport'
+  ,minCustomersPerHour: 3
+  ,maxCustomersPerHour: 24
+  ,avgCookiesPerCustomer: 1.2
+  ,randomNum: function() {
+    return Math.floor(Math.random() * (this.maxCustomersPerHour - this.minCustomersPerHour)) + this.minCustomersPerHour;
+  }
+  ,avgCustomersPerHour: []
+  ,cookiesPerHour: []
+  ,dayTotals: 0
+};
+
+var seaTacAirportList = document.getElementById('seaTacAirport');
+
+for(var sa=0; sa<hours.length; sa++){
+  seaTacAirport.avgCustomersPerHour[sa] = seaTacAirport.randomNum();
+  seaTacAirport.cookiesPerHour[sa] = Math.floor(seaTacAirport.avgCookiesPerCustomer * seaTacAirport.avgCustomersPerHour[sa]);
+  seaTacAirport.dayTotals = seaTacAirport.dayTotals + seaTacAirport.cookiesPerHour[sa];
+  var secondLiC = document.createElement('li');
+  secondLiC.textContent = `${hours[sa]}: ${seaTacAirport.cookiesPerHour[sa]} cookies`;
+  seaTacAirportList.appendChild(secondLiC);
+}
+
+var secondLiCTotals = document.createElement('li');
+secondLiCTotals.textContent = `Total: ${seaTacAirport.dayTotals}`;
+seaTacAirportList.appendChild(secondLiCTotals);
 
