@@ -85,3 +85,59 @@ for(var sc=0; sc<hours.length; sc++){
 var thirdLiTotals = document.createElement('li');
 thirdLiTotals.textContent = `Total: ${seattleCenter.dayTotals}`;
 thirdStoreList.appendChild(thirdLiTotals);
+
+var capitalHill = {
+  storeName: 'Capitol Hill'
+  ,minCustomersPerHour: 20
+  ,maxCustomersPerHour: 38
+  ,avgCookiesPerCustomer: 2.3
+  ,randomNum: function() {
+    return Math.floor(Math.random() * (this.maxCustomersPerHour - this.minCustomersPerHour)) + this.minCustomersPerHour;
+  }
+  ,avgCustomersPerHour: []
+  ,cookiesPerHour: []
+  ,dayTotals: 0
+};
+
+var fourthStoreList = document.getElementById('capitalHill');
+
+for(var ch=0; ch<hours.length; ch++){
+  capitalHill.avgCustomersPerHour[ch] = capitalHill.randomNum();
+  capitalHill.cookiesPerHour[ch] = Math.floor(capitalHill.avgCookiesPerCustomer * capitalHill.avgCustomersPerHour[ch]);
+  capitalHill.dayTotals = capitalHill.dayTotals + capitalHill.cookiesPerHour[ch];
+  var fourthLiC = document.createElement('li');
+  fourthLiC.textContent = `${hours[ch]}: ${capitalHill.cookiesPerHour[ch]} cookies`;
+  fourthStoreList.appendChild(fourthLiC);
+}
+
+var fourthLiTotals = document.createElement('li');
+fourthLiTotals.textContent = `Total: ${capitalHill.dayTotals}`;
+fourthStoreList.appendChild(fourthLiTotals);
+
+var alki = {
+  storeName: 'Alki'
+  ,minCustomersPerHour: 2
+  ,maxCustomersPerHour: 16
+  ,avgCookiesPerCustomer: 4.6
+  ,randomNum: function() {
+    return Math.floor(Math.random() * (this.maxCustomersPerHour - this.minCustomersPerHour)) + this.minCustomersPerHour;
+  }
+  ,avgCustomersPerHour: []
+  ,cookiesPerHour: []
+  ,dayTotals: 0
+};
+
+var fifthStoreList = document.getElementById('alki');
+
+for(var a=0; a<hours.length; a++){
+  alki.avgCustomersPerHour[a] = alki.randomNum();
+  alki.cookiesPerHour[a] = Math.floor(alki.avgCookiesPerCustomer * alki.avgCustomersPerHour[a]);
+  alki.dayTotals = alki.dayTotals + alki.cookiesPerHour[a];
+  var fifthLiC = document.createElement('li');
+  fifthLiC.textContent = `${hours[a]}: ${alki.cookiesPerHour[a]} cookies`;
+  fifthStoreList.appendChild(fifthLiC);
+}
+
+var fifthLiTotals = document.createElement('li');
+fifthLiTotals.textContent = `Total: ${alki.dayTotals}`;
+fifthStoreList.appendChild(fifthLiTotals);
