@@ -2,13 +2,26 @@
 
 var hours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
 
+function Store(storeName, minCustomersPerHour, maxCustomersPerHour, avgCookiesPerCustomer){
+  this.storeName = storeName;
+  this.minCustomersPerHour = minCustomersPerHour;
+  this.maxCustomersPerHour = maxCustomersPerHour;
+  this.avgCookiesPerCustomer = avgCookiesPerCustomer;
+}
+
+Store.prototype.randomNum = function() {
+  return Math.floor(Math.random() * (this.maxCustomersPerHour - this.minCustomersPerHour)) + this.minCustomersPerHour;
+};
+
+
+
 var firstandPike = {
   storeName: '1st and Pike'
   ,minCustomersPerHour: 23
   ,maxCustomersPerHour: 65
   ,avgCookiesPerCustomer: 6.3
   ,randomNum: function() {
-    return Math.floor(Math.random() * (this.maxCustomersPerHour - this.minCustomersPerHour)) + this.minCustomersPerHour;
+    
   }
   ,avgCustomersPerHour: []
   ,cookiesPerHour: []
