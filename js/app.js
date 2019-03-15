@@ -4,6 +4,7 @@ var hours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '
 
 var storesInfo = [];
 var rowData = [];
+var hourlyTotals = [];
 
 function Store(storeName, minCustomersPerHour, maxCustomersPerHour, avgCookiesPerCustomer){
   this.storeName = storeName;
@@ -69,6 +70,29 @@ function renderData(rowData, tableBody){
   }
 }
 
+function calculateHoursTotals(hours, storesInfo, hourlyTotals){
+  for(var h=0; h<hours.length; h++){
+    var eachHourTotal = 0;
+    for(var s=0; s<storesInfo.length; s++){
+      eachHourTotal = eachHourTotal + storesInfo[s].cookiesPerHourData[h];
+    }
+    hourlyTotals.push(eachHourTotal);
+  }
+}
+
+function calculateAllTotals(storesInfo, hourlyTotals){
+  var allTotlas = 0;
+  for(var s=0; s<storesInfo.length; s++){
+    allTotlas = allTotlas + storesInfo[s].dayTotals;
+  }
+  hourlyTotals.push(allTotlas);
+}
+
+function calculateTotals(hours, storesInfo, hourlyTotals){
+  calculateHoursTotals(hours, storesInfo, hourlyTotals);
+  calculateAllTotals(storesInfo, hourlyTotals);
+}
+
 function createHeader(hours, tableHeader){
   var storeName = document.createElement('td');
   storeName.innerHTML = 'Store Name';
@@ -83,10 +107,24 @@ function createHeader(hours, tableHeader){
   tableHeader.appendChild(storeDailyTotals);
 }
 
+function createFooter(hourlyTotals, tableFooter){
+  var TotalsTxt = document.createElement('td');
+  TotalsTxt.innerHTML = 'Totals';
+  tableFooter.appendChild(TotalsTxt);
+  for(var i=0; i<hourlyTotals.length; i++){
+    var hourlyTotalData = document.createElement('td');
+    hourlyTotalData.innerHTML = hourlyTotals[i];
+    tableFooter.appendChild(hourlyTotalData);
+  }
+}
+
 var tableHeader = document.getElementById('store_hours');
 var tableBody = document.getElementById('store_data');
+var tableFooter = document.getElementById('hours_totals');
 
 createHeader(hours, tableHeader);
 generateStoresData(storesInfo);
 makeRow(storesInfo, rowData);
 renderData(rowData, tableBody);
+calculateTotals(hours, storesInfo, hourlyTotals);
+createFooter(hourlyTotals, tableFooter);
