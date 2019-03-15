@@ -3,16 +3,14 @@
 var hours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
 
 var storesInfo = [];
-var tableData = [];
 var rowData = [];
-var header = [];
 
 function Store(storeName, minCustomersPerHour, maxCustomersPerHour, avgCookiesPerCustomer){
   this.storeName = storeName;
   this.minCustomersPerHour = minCustomersPerHour;
   this.maxCustomersPerHour = maxCustomersPerHour;
   this.avgCookiesPerCustomer = avgCookiesPerCustomer;
-  this.cookiesPerHour = [];
+  this.cookiesPerHourData = [];
   this.dayTotals = 0;
 }
 
@@ -26,34 +24,50 @@ Store.prototype.cookiesPerHour = function(avgCustomersPerHour) {
 
 Store.prototype.calculateData = function () {
   for (var i = 0; i < hours.length; i++) {
-    this.cookiesPerHour[i] = Math.floor(this.avgCookiesPerCustomer * this.avgCustomersPerHour());
-    this.dayTotals = this.dayTotals + this.cookiesPerHour[i];
+    this.cookiesPerHourData[i] = this.cookiesPerHour(this.avgCustomersPerHour());
+    this.dayTotals = this.dayTotals + this.cookiesPerHourData[i];
   }
 };
 
 var firstStore = new Store('1st and Pike', 23, 65, 6.3);
+var secondStore = new Store('SeaTac Airport', 3, 24, 1.2);
+var thirdStore = new Store('Seattle Center', 11, 38, 3.7);
+var fourthStore = new Store('Capitol Hill', 20, 38, 2.3);
+var fifthStore = new Store('Alki', 2, 16, 4.3);
+
 
 storesInfo.push(firstStore);
+storesInfo.push(secondStore);
+storesInfo.push(thirdStore);
+storesInfo.push(fourthStore);
+storesInfo.push(fifthStore);
+
 
 function generateStoresData(storesInfo){
   for(var s=0; s<storesInfo.length; s++){
-    tableData.push(storesInfo[s].calculateData());
+    storesInfo[s].calculateData();
   }
 }
 
-function makeRow(tableData){
-  for(var t=0; t<tableData.length; t++){
-    var perHourData = tableData[t][1];
+function makeRow(storesInfo, rowData){
+  for(var t=0; t<storesInfo.length; t++){
+    var storesCookies = storesInfo[t].cookiesPerHourData;
+    var rowValue = '<td>' + storesInfo[t].storeName + '</td>';
+    for(var sc=0; sc<storesCookies.length; sc++){
+      rowValue = rowValue + '<td>' + storesCookies[sc] + '</td>';
+    }
+    rowValue = rowValue + '<td>' + storesInfo[t].dayTotals + '</td>';
+    rowData.push(rowValue);
   }
 }
 
-function renderData(tableData){
-  for(var t=0; t<tableData.length; t++){
-
+function renderData(rowData, tableBody){
+  for(var t=0; t<rowData.length; t++){
+    var newRow = document.createElement('tr');
+    newRow.innerHTML = rowData[t];
+    tableBody.appendChild(newRow);
   }
 }
-
-var tableHeader = document.getElementById('store_hours');
 
 function createHeader(hours, tableHeader){
   var storeName = document.createElement('td');
@@ -64,39 +78,15 @@ function createHeader(hours, tableHeader){
     storeTime.innerHTML = hours[i];
     tableHeader.appendChild(storeTime);
   }
-
+  var storeDailyTotals = document.createElement('td');
+  storeDailyTotals.innerHTML = 'Total';
+  tableHeader.appendChild(storeDailyTotals);
 }
 
-function makeRow(arr) {
-  for (var i=0; i < arr.length; i++) {
-    data.push(
-      '<td>' + arr[i].name + '</td>' +
-      '<td>' + arr[i].age + '</td>' +
-      '<td>' + arr[i].profession + '</td>'
-    )
-  }
-}
-
-function render(tableRow) {
-  for (var j=0; j < tableRow.length; j++) {
-    var newRow = document.createElement('tr');
-    newRow.innerHTML = tableRow[j];
-    table.appendChild(newRow);
-  }
-}
-
-/* Store.prototype.calculateData = function () {
-  for (var i = 0; i < hours.length; i++) {
-    this.avgCustomersPerHour[i] = firstandPike.randomNum();
-    firstandPike.cookiesPerHour[i] = Math.floor(firstandPike.avgCookiesPerCustomer * firstandPike.avgCustomersPerHour[i]);
-    firstandPike.dayTotals = firstandPike.dayTotals + firstandPike.cookiesPerHour[i];
-    var firstLiC = document.createElement('li');
-    firstLiC.textContent = `${hours[i]}: ${firstandPike.cookiesPerHour[i]} cookies`;
-    firstStoreList.appendChild(firstLiC);
-  }
-};
- */
+var tableHeader = document.getElementById('store_hours');
+var tableBody = document.getElementById('store_data');
 
 createHeader(hours, tableHeader);
 generateStoresData(storesInfo);
-
+makeRow(storesInfo, rowData);
+renderData(rowData, tableBody);
