@@ -4,6 +4,7 @@ var hours = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '
 
 var storesInfo = [];
 var tableData = [];
+var rowData = [];
 var header = [];
 
 function Store(storeName, minCustomersPerHour, maxCustomersPerHour, avgCookiesPerCustomer){
@@ -11,6 +12,8 @@ function Store(storeName, minCustomersPerHour, maxCustomersPerHour, avgCookiesPe
   this.minCustomersPerHour = minCustomersPerHour;
   this.maxCustomersPerHour = maxCustomersPerHour;
   this.avgCookiesPerCustomer = avgCookiesPerCustomer;
+  this.cookiesPerHour = [];
+  this.dayTotals = 0;
 }
 
 Store.prototype.avgCustomersPerHour = function() {
@@ -21,7 +24,34 @@ Store.prototype.cookiesPerHour = function(avgCustomersPerHour) {
   return Math.floor(this.avgCookiesPerCustomer * avgCustomersPerHour);
 };
 
+Store.prototype.calculateData = function () {
+  for (var i = 0; i < hours.length; i++) {
+    this.cookiesPerHour[i] = Math.floor(this.avgCookiesPerCustomer * this.avgCustomersPerHour());
+    this.dayTotals = this.dayTotals + this.cookiesPerHour[i];
+  }
+};
+
 var firstStore = new Store('1st and Pike', 23, 65, 6.3);
+
+storesInfo.push(firstStore);
+
+function generateStoresData(storesInfo){
+  for(var s=0; s<storesInfo.length; s++){
+    tableData.push(storesInfo[s].calculateData());
+  }
+}
+
+function makeRow(tableData){
+  for(var t=0; t<tableData.length; t++){
+    var perHourData = tableData[t][1];
+  }
+}
+
+function renderData(tableData){
+  for(var t=0; t<tableData.length; t++){
+
+  }
+}
 
 var tableHeader = document.getElementById('store_hours');
 
@@ -37,6 +67,23 @@ function createHeader(hours, tableHeader){
 
 }
 
+function makeRow(arr) {
+  for (var i=0; i < arr.length; i++) {
+    data.push(
+      '<td>' + arr[i].name + '</td>' +
+      '<td>' + arr[i].age + '</td>' +
+      '<td>' + arr[i].profession + '</td>'
+    )
+  }
+}
+
+function render(tableRow) {
+  for (var j=0; j < tableRow.length; j++) {
+    var newRow = document.createElement('tr');
+    newRow.innerHTML = tableRow[j];
+    table.appendChild(newRow);
+  }
+}
 
 /* Store.prototype.calculateData = function () {
   for (var i = 0; i < hours.length; i++) {
@@ -51,3 +98,5 @@ function createHeader(hours, tableHeader){
  */
 
 createHeader(hours, tableHeader);
+generateStoresData(storesInfo);
+
